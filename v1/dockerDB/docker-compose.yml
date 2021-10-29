@@ -6,11 +6,13 @@ services:
     depends_on:
         - db
     environment:
-      MONGODB_URI: mongodb://host.docker.internal:27017
+      MONGODB_URI: mongodb://mongo:27017
       MONGODB_DB: FURTHRmind
       DEFAULT_ADMIN: "demo@furthr-research.com"
     ports:
       - 8080:8080
+    networks:
+      - backend
   watchtower:
     image: containrrr/watchtower
     volumes:
