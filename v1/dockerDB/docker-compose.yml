@@ -27,13 +27,13 @@ services:
       MONDODB_LOG_DIR: /dev/null
     volumes:
       - mongodb-data:/data/db
-    networks:
-      - backend
+#    networks:
+#      - backend
 
 volumes:
   mongodb-data:
     driver: local
 
-networks:
-  backend:
-    driver: bridge
+#networks:
+#  backend:
+#    driver: bridge
