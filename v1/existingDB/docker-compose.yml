@@ -4,11 +4,12 @@ services:
     image: 'docker.io/furthrresearch/furthrmind-server-v1:latest'
     restart: unless-stopped
     environment:
-      MONGODB_URI: mongodb://host.docker.internal:27017
+      MONGODB_URI: mongodb://127.0.0.1:27017
       MONGODB_DB: FURTHRmind
       DEFAULT_ADMIN: "demo@furthr-research.com"
     ports:
       - 8080:8080
+    network_mode: host
   watchtower:
     image: containrrr/watchtower
     volumes:
