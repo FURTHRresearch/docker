@@ -29,14 +29,17 @@ services:
     environment:
       MONGO_INITDB_DATABASE: FURTHRmind
       MONGODB_DATA_DIR: /data/db
-      MONDODB_LOG_DIR: /dev/null
+      MONDODB_LOG_DIR: /data/log
     volumes:
       - mongodb-data:/data/db
+      - mongodb-log:/data/log
 #    networks:
 #      - backend
 
 volumes:
   mongodb-data:
+    driver: local
+  mongodb-log:
     driver: local
 
 #networks:
