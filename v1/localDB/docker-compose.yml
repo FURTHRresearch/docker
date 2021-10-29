@@ -6,7 +6,7 @@ services:
     environment:
       MONGODB_URI: mongodb://host.docker.internal:27017
       MONGODB_DB: FURTHRmind
-      ENABLE_WEB: true
+      DEFAULT_ADMIN: "demo@furthr-research.com"
     ports:
       - 8080:8080
   watchtower:
