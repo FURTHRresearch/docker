@@ -21,6 +21,8 @@ services:
   db:
     image: mongo
     restart: unless-stopped
+    ports:
+      - 27018:27017
     environment:
       MONGO_INITDB_DATABASE: FURTHRmind
       MONGODB_DATA_DIR: /data/db
