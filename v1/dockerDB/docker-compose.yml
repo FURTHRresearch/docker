@@ -11,8 +11,8 @@ services:
       DEFAULT_ADMIN: "demo@furthr-research.com"
     ports:
       - 8080:8080
-    networks:
-      - backend
+#    networks:
+#      - backend
   watchtower:
     image: containrrr/watchtower
     volumes:
