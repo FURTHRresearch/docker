@@ -1,0 +1,11 @@
+version: '3'
+services:
+  furthrmind-server:
+    image: 'docker.io/furthrresearch/furthrmind-server-v1:latest'
+    restart: unless-stopped
+    environment:
+      MONGODB_URI: mongodb://host.docker.internal:27017
+      MONGODB_DB: FURTHRmind
+      ENABLE_WEB: true
+    ports:
+      - 8080:8080
