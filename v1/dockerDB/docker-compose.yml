@@ -27,6 +27,7 @@ services:
       MONGO_INITDB_DATABASE: FURTHRmind
       MONGODB_DATA_DIR: /data/db
       MONDODB_LOG_DIR: /dev/null
+      GUNICORN_CMD_ARGS: -b 127.0.0.1:8080 -w 3
     volumes:
       - mongodb-data:/data/db
 #    networks:
