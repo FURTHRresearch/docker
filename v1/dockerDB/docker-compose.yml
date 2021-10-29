@@ -9,7 +9,7 @@ services:
       MONGODB_URI: mongodb://db:27017
       MONGODB_DB: FURTHRmind
       DEFAULT_ADMIN: "demo@furthr-research.com"
-      GUNICORN_CMD_ARGS: -b host.docker.internal:8080 -w 3
+      GUNICORN_CMD_ARGS: -b 0.0.0.0:8080 -w 3
     ports:
       - 8080:8080
 #    networks:
