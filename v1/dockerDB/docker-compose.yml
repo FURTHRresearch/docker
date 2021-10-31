@@ -12,7 +12,7 @@ services:
       ROOT_URL: "http://localhost"
       GUNICORN_CMD_ARGS: -b 0.0.0.0:8080 -w 3
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
 #    networks:
 #      - backend
   watchtower:
