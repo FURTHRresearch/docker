@@ -5,7 +5,6 @@ services:
     restart: unless-stopped
     environment:
       MONGODB_URI: mongodb://localhost:27017
-      #      MONGODB_URI: mongodb://host.docker.internal:27017
       MONGODB_DB: FURTHRmind
       DEFAULT_ADMIN: ""
       ROOT_URL: "http://localhost"

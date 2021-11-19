@@ -13,8 +13,8 @@ services:
       GUNICORN_CMD_ARGS: -b 0.0.0.0:8080 -w 3
     ports:
       - 127.0.0.1:8080:8080
-  #    networks:
-  #      - backend
+      networks:
+        - backend
   watchtower:
     image: containrrr/watchtower
     volumes:
@@ -34,8 +34,8 @@ services:
     volumes:
       - mongodb-data:/data/db
       - mongodb-log:/data/log
-#    networks:
-#      - backend
+    networks:
+      - backend
 
 volumes:
   mongodb-data:
@@ -43,6 +43,6 @@ volumes:
   mongodb-log:
     driver: local
 
-#networks:
-#  backend:
-#    driver: bridge
+networks:
+  backend:
+    driver: bridge
