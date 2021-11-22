@@ -56,8 +56,8 @@ services:
       MINIO_ACCESS_KEY: "NicNlFvpC5WLmk1gs269" # change
       MINIO_SECRET_KEY: "AJukahGO46BwICA7SZZk" # change
       MINIO_REGION_NAME: 'local'
-    networks:
-      - backend
+    # networks:
+    #   - backend
   coderunner:
     image: furthrresearch/coderunner
     build: ./WebDataCalc/CodeRunner
