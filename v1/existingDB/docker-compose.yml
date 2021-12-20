@@ -11,13 +11,17 @@ services:
       GUNICORN_CMD_ARGS: -b 127.0.0.1:8080 -w 3
     network_mode: host
   furthrmind-TSR:
-    image: 'docker.io/furthrresearch/furthrmind-server-v1:latest'
+    image: 'docker.io/furthrresearch/furthrmind-time-server-v1:latest'
     restart: unless-stopped
     environment:
-      TSR_ENABLED: false
+      TSR_ENABLED: "false"
       TSR_CERT: ""
       TSR_URL: ""
-    command: sh ./startTSR.sh
+      MONGODB_URI: mongodb://localhost:27017
+      MONGODB_DB: FURTHRmind
+    volumes:
+      - /opt/tsa_cert:/tsa_cert
+      - /opt/do_certs:/do_certs
 
   #    ports:
   #      - 8080:8080
