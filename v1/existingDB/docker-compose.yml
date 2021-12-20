@@ -10,6 +10,15 @@ services:
       ROOT_URL: "http://localhost"
       GUNICORN_CMD_ARGS: -b 127.0.0.1:8080 -w 3
     network_mode: host
+  furthrmind-TSR:
+    image: 'docker.io/furthrresearch/furthrmind-server-v1:latest'
+    restart: unless-stopped
+    environment:
+      TSR_ENABLED: false
+      TSR_CERT: ""
+      TSR_URL: ""
+    command: sh ./startTSR.sh
+
   #    ports:
   #      - 8080:8080
   #    extra_hosts:

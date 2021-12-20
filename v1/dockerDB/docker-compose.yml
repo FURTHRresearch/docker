@@ -15,11 +15,23 @@ services:
       - 127.0.0.1:8080:8080
     networks:
       - backend
+
+  furthrmind-TSR:
+    image: 'docker.io/furthrresearch/furthrmind-server-v1:latest'
+    restart: unless-stopped
+    environment:
+      TSR_ENABLED: false
+      TSR_CERT: ""
+      TSR_URL: ""
+    command: sh ./startTSR.sh
+
+
   watchtower:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 300
+
   db:
     image: mongo
     restart: unless-stopped
