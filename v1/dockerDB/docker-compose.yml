@@ -27,7 +27,6 @@ services:
       MONGODB_DB: FURTHRmind
     volumes:
       - /opt/tsa_cert:/tsa_cert
-      - /opt/do_certs:/do_certs
 
   watchtower:
     image: containrrr/watchtower
