@@ -10,6 +10,7 @@ services:
       ROOT_URL: "http://localhost"
       GUNICORN_CMD_ARGS: -b 127.0.0.1:8080 -w 3
     network_mode: host
+
   furthrmind-TSR:
     image: 'docker.io/furthrresearch/furthrmind-time-server-v1:latest'
     restart: unless-stopped
@@ -21,12 +22,23 @@ services:
       MONGODB_DB: FURTHRmind
     volumes:
       - /opt/tsa_cert:/tsa_cert
-      - /opt/do_certs:/do_certs
 
-  #    ports:
-  #      - 8080:8080
-  #    extra_hosts:
-  #      - host.docker.internal:host-gateway
+  coderunner:
+    image: furthrresearch/coderunner
+    build: ./WebDataCalc/CodeRunner
+    profiles:
+      - donotrun
+  dockerrun:
+    image: glot/docker-run
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8088:8088
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      API_ACCESS_TOKEN: placeholder # change
+      DOCKER_CONTAINER_NETWORK_DISABLED: 'false'
+
   watchtower:
     image: containrrr/watchtower
     volumes:

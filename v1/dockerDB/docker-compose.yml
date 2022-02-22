@@ -51,6 +51,24 @@ services:
     networks:
       - backend
 
+  coderunner:
+    image: furthrresearch/coderunner
+    build: ./WebDataCalc/CodeRunner
+    profiles:
+      - donotrun
+
+  dockerrun:
+    image: glot/docker-run
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8088:8088
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      API_ACCESS_TOKEN: placeholder # change
+      DOCKER_CONTAINER_NETWORK_DISABLED: 'false'
+
+
 volumes:
   mongodb-data:
     driver: local
