@@ -11,6 +11,13 @@ services:
       DEFAULT_ADMIN: ""
       ROOT_URL: "http://localhost"
       GUNICORN_CMD_ARGS: -b 0.0.0.0:8080 -w 3
+      S3_BUCKET: furthrmind
+      S3_KEY: ""
+      S3_SECRET: ""
+      S3_REGION: ''
+      S3_ENDPOINT: ''
+      WEBDATACALC_API_KEY: placeholder # change
+      WEBDATACALC_API: 'http://dockerrun:8088'
     ports:
       - 127.0.0.1:8080:8080
 
