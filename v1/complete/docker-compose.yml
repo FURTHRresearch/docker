@@ -20,8 +20,7 @@ services:
       WEBDATACALC_API: 'http://dockerrun:8088'
     ports:
       - 127.0.0.1:8080:8080
-  #    networks:
-  #      - backend
+
   furthrmind-TSR:
     image: 'docker.io/furthrresearch/furthrmind-time-server-v1:latest'
     restart: unless-stopped
@@ -53,8 +52,7 @@ services:
     volumes:
       - mongodb-data:/data/db
       - mongodb-log:/data/log
-  #    networks:
-  #      - backend
+
   minio:
     image: minio/minio
     entrypoint: sh
@@ -65,11 +63,10 @@ services:
     volumes:
       - minio-data:/export
     environment:
-      MINIO_ACCESS_KEY: "NicNlFvpC5WLmk1gs269" # change
-      MINIO_SECRET_KEY: "AJukahGO46BwICA7SZZk" # change
+      MINIO_ACCESS_KEY: "" # change
+      MINIO_SECRET_KEY: "" # change
       MINIO_REGION_NAME: 'local'
-    # networks:
-    #   - backend
+
   coderunner:
     image: furthrresearch/coderunner
     build: ./WebDataCalc/CodeRunner
@@ -94,6 +91,4 @@ volumes:
   minio-data:
     driver: local
 
-#networks:
-#  backend:
-#    driver: bridge
+
