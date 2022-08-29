@@ -1,0 +1,94 @@
+version: '3'
+x-environment: &commonEnvironment
+  MONGODB_URI: 'mongodb://db:27017'
+  MONGODB_DB: FURTHRmind
+  DEFAULT_ADMIN: admin@your-organization.xx
+  ROOT_URL: https://your-url-to-furthrmind.
+  GUNICORN_CMD_ARGS: -b 0.0.0.0:8080 -w 3  # configure the port and the number of workers
+  S3_KEY: ""      # to use MonogDB for file storage, leave S3_xxx as empty string
+  S3_SECRET: ""
+  S3_ENDPOINT: ""
+  S3_BUCKET: ""
+  S3_REGION: ""
+  ALLOWED_SIGNUP_DOMAIN: your-organization.xx   # People with an email ending this domain can register their self.
+  TSR_ENABLED: true
+  TSR_CERT: "/tsa_cert"    # file path to timestamp server certificate, you will get that from timestamp server provider
+  TSR_URL: ""   # url to timestamp server, use the service you trust. a list of free services can be found on https://gist.github.com/Manouchehri/fd754e402d98430243455713efada710
+  REDIS_QUEUE_ENABLED: true   # if false, redis_url and db not necessary
+  REDIS_URL: redis://default:<redis-secret>@redis:6379    # url to the redis server.
+  REDIS_DB: FURTHRmind
+  WEBDATACALC_API: http://dockerrun:8088
+  WEBDATACALC_API_KEY: <your-secret-for-the-webdatacalc>
+  TRIGGER_INTERVAL: 5   # secs, checks for outdated calculations
+
+services:
+  furthrmind-server:
+    image: 'docker.io/furthrresearch/furthrmind-server-v1:dev'
+    restart: unless-stopped
+    environment: *commonEnvironment
+    ports:    # for external MongoDB consider using network_mode: "host"
+     - 127.0.0.1:8080:8080
+
+  furthrmind-worker:
+    image: 'docker.io/furthrresearch/furthrmind-worker-v1:dev'
+    restart: unless-stopped
+    environment: *commonEnvironment
+
+  furthrmind-TSR:
+    image: 'docker.io/furthrresearch/furthrmind-time-server-v1:latest'
+    restart: unless-stopped
+    environment: *commonEnvironment
+    volumes:
+      - /opt/tsa_cert:/tsa_cert
+
+  db:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:27017:27017
+    logging:
+      driver: "none"
+    environment:
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /data/log
+    volumes:
+      - mongodb-data:/data/db
+      - mongodb-log:/data/log
+
+  redis:
+    image: redis:latest
+    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - cache:/data
+
+  coderunner:
+    image: furthrresearch/furthrmind-coderunner-v1
+
+  dockerrun:
+    image: glot/docker-run
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      API_ACCESS_TOKEN: <your-secret-for-the-webdatacalc>
+      DOCKER_CONTAINER_NETWORK_DISABLED: 'false'
+
+  furthrmind-trigger:
+    image: 'docker.io/furthrresearch/furthrmind-trigger-server-v1:latest'
+    restart: unless-stopped
+    environment: *commonEnvironment
+
+  watchtower:  # service to check for updates
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 3600    # seconds to check for updates of new container
+
+volumes:
+  cache:
+    driver: local
+  mongodb-data:
+    driver: local
+  mongodb-log:
+    driver: local
