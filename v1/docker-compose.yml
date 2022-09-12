@@ -20,6 +20,8 @@ x-environment: &commonEnvironment
   WEBDATACALC_API: http://dockerrun:8088
   WEBDATACALC_API_KEY: <your-secret-for-the-webdatacalc>
   TRIGGER_INTERVAL: 5   # secs, checks for outdated calculations
+  ONLY_OFFICE_DOC_SERVER: https://your-only-office-url.com
+  ONLY_OFFICE_JWT_SECRET: your_onlyoffice_secret
 
 services:
   furthrmind-server:
