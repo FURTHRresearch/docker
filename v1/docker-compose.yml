@@ -22,6 +22,8 @@ x-environment: &commonEnvironment
   TRIGGER_INTERVAL: 5   # secs, checks for outdated calculations
   ONLY_OFFICE_DOC_SERVER: https://your-only-office-url.com
   ONLY_OFFICE_JWT_SECRET: your_onlyoffice_secret
+  SPREADSHEET_CALCULATOR_URL: "http://spreadsheet-calculator"
+  SPREADSHEET_CALCULATOR_ACCESS_KEY: "IsMrLkYyXdnzTvJi"
 
 services:
   furthrmind-server:
@@ -42,7 +44,36 @@ services:
     environment: *commonEnvironment
     volumes:
       - /opt/tsa_cert:/tsa_cert
+  
+  furthrmind-coderunner:
+    image: furthrresearch/furthrmind-coderunner-v1
 
+  furthrmind-trigger:
+    image: 'docker.io/furthrresearch/furthrmind-trigger-server-v1:latest'
+    restart: unless-stopped
+    environment: *commonEnvironment
+
+  watchtower:  # service to check for updates
+    image: containrrr/watchtower
+      
+  furthrmind-spreadsheet-calculator:
+    image: 'docker.io/furthrresearch/spreadsheet-calculator'
+    restart: unless-stopped
+    environment: *commonEnvironment
+    networks:
+      - default
+    labels:
+      - "com.centurylinklabs.watchtower.scope=dev"
+   
+  dockerrun:
+    image: glot/docker-run
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      API_ACCESS_TOKEN: <your-secret-for-the-webdatacalc>
+      DOCKER_CONTAINER_NETWORK_DISABLED: 'false'
+      
   db:
     image: mongo
     restart: unless-stopped
@@ -64,25 +95,7 @@ services:
     volumes:
       - cache:/data
 
-  coderunner:
-    image: furthrresearch/furthrmind-coderunner-v1
-
-  dockerrun:
-    image: glot/docker-run
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      API_ACCESS_TOKEN: <your-secret-for-the-webdatacalc>
-      DOCKER_CONTAINER_NETWORK_DISABLED: 'false'
-
-  furthrmind-trigger:
-    image: 'docker.io/furthrresearch/furthrmind-trigger-server-v1:latest'
-    restart: unless-stopped
-    environment: *commonEnvironment
-
-  watchtower:  # service to check for updates
-    image: containrrr/watchtower
+  
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 3600    # seconds to check for updates of new container
