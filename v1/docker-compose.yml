@@ -55,6 +55,9 @@ services:
 
   watchtower:  # service to check for updates
     image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 3600    # seconds to check for updates of new container
       
   furthrmind-spreadsheet-calculator:
     image: 'docker.io/furthrresearch/spreadsheet-calculator'
@@ -91,14 +94,9 @@ services:
   redis:
     image: redis:latest
     restart: always
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    command: redis-server --save 20 1 --loglevel warning --requirepass <redis-secret>
     volumes:
       - cache:/data
-
-  
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 3600    # seconds to check for updates of new container
 
 volumes:
   cache:
